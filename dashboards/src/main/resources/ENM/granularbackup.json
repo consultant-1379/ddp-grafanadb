@@ -1,0 +1,633 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1661855345415,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "${ds:text} for $site",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://${ds:text}.athtem.eei.ericsson.se/php/index.php?site=$site&date=${__from:date:YYYY-MM-DD}&oss=tor&dir=${__from:date:DDMMYY}"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Logs for $site",
+      "tooltip": "",
+      "type": "link",
+      "url": "https://${ds:text}.athtem.eei.ericsson.se/php/TOR/system/elasticsearch.php?site=$site&date=${__from:date:YYYY-MM-DD}&dir=${__from:date:DDMMYY}&oss=tor&logdir=logs"
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "PLATFORM",
+        "ENM"
+      ],
+      "targetBlank": true,
+      "title": "ENM Platform",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ENM_APP"
+      ],
+      "targetBlank": true,
+      "title": "ENM APPs",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "GENERIC",
+        "PLATFORM"
+      ],
+      "targetBlank": true,
+      "title": "Generic Platform",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "panels": [
+    {
+      "datasource": "${ds}",
+      "description": "<ul><li>Rate value of Infinite is due to a duration of 0 seconds</li></ul>",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Transfer Size"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Rate"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "binBps"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 5,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "frameIndex": 1,
+        "showHeader": true
+      },
+      "pluginVersion": "7.5.11",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "bro_operation_transferred_bytes{site=\"$site\", action=\"CREATE_BACKUP\", action_id=\"$action_id\"}",
+          "format": "table",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "bro_granular_stage_info{site=\"$site\", action=\"CREATE_BACKUP\", action_id=\"$action_id\"}",
+          "format": "table",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "bro_granular_stage_duration_seconds{site=\"$site\", stage=\"EXECUTION\", action_id=\"$action_id\"}",
+          "format": "table",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "C"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Agents in Backup $action_id",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "agent"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time 1": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Value #B": true,
+              "__name__ 1": true,
+              "__name__ 2": true,
+              "__name__ 3": true,
+              "action 1": true,
+              "action 2": true,
+              "action 3": true,
+              "action_id 1": true,
+              "action_id 2": true,
+              "action_id 3": true,
+              "applicationName 1": true,
+              "applicationName 2": true,
+              "applicationName 3": true,
+              "backup_name": true,
+              "backup_type 1": true,
+              "backup_type 2": true,
+              "backup_type 3": true,
+              "instance 1": true,
+              "instance 2": true,
+              "instance 3": true,
+              "job 1": true,
+              "job 2": true,
+              "job 3": true,
+              "site 1": true,
+              "site 2": true,
+              "site 3": true,
+              "stage 1": true,
+              "stage 2": true,
+              "status": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Value #A": "Transfer Size",
+              "Value #C": "Duration"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": "Transfer Size",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "Duration"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Duration": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Transfer Size / Duration": "Rate"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": "${ds}",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "End Time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsIso"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duration(HH:MM:SS)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dthms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Start Time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsIso"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 19,
+        "x": 5,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "frameIndex": 1,
+        "showHeader": true
+      },
+      "pluginVersion": "7.5.11",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "bro_granular_stage_info{site=\"$site\", action=\"CREATE_BACKUP\", agent=\"$agent\", action_id=\"$action_id\", stage=~\"PREPARATION|EXECUTION|POST_ACTIONS\"}",
+          "format": "table",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "bro_granular_end_time{site=\"$site\", action=\"CREATE_BACKUP\", agent=\"$agent\", action_id=\"$action_id\"} * 1000",
+          "format": "table",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "bro_granular_stage_duration_seconds{site=\"$site\", action=\"CREATE_BACKUP\", agent=\"$agent\", action_id=\"$action_id\"}",
+          "format": "table",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "C"
+        }
+      ],
+      "title": "$agent Info For $action_id",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Value #B": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Value #C": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "action_id": {
+                "aggregations": [],
+                "operation": null
+              },
+              "agent": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "stage": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "status": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Value #B": "End Time",
+              "Value #C": "Duration(HH:MM:SS)",
+              "agent": "Agent",
+              "stage": "Stage",
+              "status": "Status"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": "Duration(HH:MM:SS)",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Start Time",
+            "binary": {
+              "left": "End Time",
+              "operator": "-",
+              "reducer": "sum",
+              "right": "Duration(HH:MM:SS) * 1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Duration(HH:MM:SS) * 1000": true
+            },
+            "indexByName": {
+              "Agent": 3,
+              "Duration(HH:MM:SS)": 1,
+              "Duration(HH:MM:SS) * 1000": 6,
+              "End Time": 2,
+              "Stage": 4,
+              "Start Time": 0,
+              "Status": 5
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 27,
+  "style": "dark",
+  "tags": ["ENM_APP"],
+  "templating": {
+    "list": [
+	      {
+        "hide": 0,
+        "multi": false,
+        "name": "ds",
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "/^ddp/",
+        "type": "datasource"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "datasource": "${ds}",
+        "definition": "label_values(up, site)",
+        "description": "",
+        "error": {
+          "config": {
+            "data": {
+              "end": "1661855394",
+              "match[]": "up",
+              "start": "1659263394"
+            },
+            "headers": {
+              "Content-Type": "application/x-www-form-urlencoded",
+              "X-Grafana-Org-Id": 4
+            },
+            "hideFromInspector": true,
+            "method": "POST",
+            "retry": 0,
+            "url": "api/datasources/proxy/15/api/v1/series"
+          },
+          "data": {
+            "error": "cannot fetch time series for \"MinTimestamp=2022-07-31 10:29:54 +0000 UTC, MaxTimestamp=2022-08-30 10:29:54 +0000 UTC, TagFilters=[\\n{Key=\\\"\\\", Value=\\\"up\\\", IsNegative: false, IsRegexp: false}\\n]\": cannot find metric names: error when searching tsids: the number of matching unique timeseries exceeds 300000; either narrow down the search or increase -search.maxUniqueTimeseries",
+            "errorType": "422",
+            "message": "cannot fetch time series for \"MinTimestamp=2022-07-31 10:29:54 +0000 UTC, MaxTimestamp=2022-08-30 10:29:54 +0000 UTC, TagFilters=[\\n{Key=\\\"\\\", Value=\\\"up\\\", IsNegative: false, IsRegexp: false}\\n]\": cannot find metric names: error when searching tsids: the number of matching unique timeseries exceeds 300000; either narrow down the search or increase -search.maxUniqueTimeseries",
+            "status": "error"
+          },
+          "message": "cannot fetch time series for \"MinTimestamp=2022-07-31 10:29:54 +0000 UTC, MaxTimestamp=2022-08-30 10:29:54 +0000 UTC, TagFilters=[\\n{Key=\\\"\\\", Value=\\\"up\\\", IsNegative: false, IsRegexp: false}\\n]\": cannot find metric names: error when searching tsids: the number of matching unique timeseries exceeds 300000; either narrow down the search or increase -search.maxUniqueTimeseries",
+          "status": 422,
+          "statusText": "Unprocessable Entity"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "site",
+        "options": [],
+        "query": {
+          "query": "label_values(up, site)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "datasource": "${ds}",
+        "definition": "label_values(bro_operation_info{site=\"$site\", action=\"CREATE_BACKUP\"}, action_id)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "action_id",
+        "options": [],
+        "query": {
+          "query": "label_values(bro_operation_info{site=\"$site\", action=\"CREATE_BACKUP\"}, action_id)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "datasource": "${ds}",
+        "definition": "label_values(bro_granular_stage_info{site=\"$site\", action_id=\"$action_id\", action=\"CREATE_BACKUP\"}, agent)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "agent",
+        "options": [],
+        "query": {
+          "query": "label_values(bro_granular_stage_info{site=\"$site\", action_id=\"$action_id\", action=\"CREATE_BACKUP\"}, agent)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Granular Backup Dashboard",
+  "uid": "551bb84e-1416-11ee-be56-0242ac120002",
+  "version": 1
+}

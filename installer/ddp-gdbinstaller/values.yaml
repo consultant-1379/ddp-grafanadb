@@ -1,0 +1,40 @@
+
+dashboards: nil
+pvc: nil
+
+image:
+  repository: registry.access.redhat.com/ubi9/ubi
+  pullPolicy: IfNotPresent
+  tag: 9.2
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+ capabilities:
+   drop:
+   - ALL
+ readOnlyRootFilesystem: true
+ runAsNonRoot: true
+ runAsUser: 1000
+
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

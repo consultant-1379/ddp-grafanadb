@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "ddp-gdbinstaller.fullname" . }}-scripts
+  labels:
+    {{- include "ddp-gdbinstaller.labels" . | nindent 4 }}
+data:

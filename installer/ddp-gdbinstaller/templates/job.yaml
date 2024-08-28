@@ -1,0 +1,58 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "ddp-gdbinstaller.fullname" . }}
+  labels:
+    {{- include "ddp-gdbinstaller.labels" . | nindent 4 }}
+spec:
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "ddp-gdbinstaller.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+       {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: Never
+      volumes:
+        - name: dashboards
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc }}
+        - name: scripts
+          configMap:
+            name: {{ include "ddp-gdbinstaller.fullname" . }}-scripts
+      containers:
+        - name: {{ .Chart.Name }}
+          command: ["bash",  "/scripts/install.sh", {{ .Values.dashboards | quote}} ]
+          #command: ["ls",  "-l", "/", "/scripts", "/dashboards" ]
+          #command: ["sleep", "900"]
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: dashboards
+              mountPath: /dashboards
+            - name: scripts
+              mountPath: /scripts
